@@ -30,8 +30,6 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNode requires a tag")
         html = f"<{self.tag}{self.props_to_html()}>"
         for child in self.children:
-            if child.value is None and isinstance(child, LeafNode):
-                raise ValueError("Child requires a value")
             html += child.to_html()
         html += f"</{self.tag}>"
         return html
