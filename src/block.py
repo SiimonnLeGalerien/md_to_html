@@ -17,7 +17,7 @@ def block_to_block_type(block):
     block_split = block.split("\n")
     is_quote = True
     for quote in block_split:
-        if len(re.findall(r"^\>\ .+$", quote)) != 1:
+        if not quote.startswith(">"):
             is_quote = False
             break
     if is_quote:

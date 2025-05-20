@@ -155,8 +155,7 @@ def quote_to_html_node(block):
     lines = block.split("\n")
     new_lines = []
     for line in lines:
-        line = line[2:]
-        new_lines.append(line)
+        new_lines.append(line.lstrip(">").strip())
     paragraph = " ".join(new_lines)
     children = text_to_children(paragraph)
     return ParentNode("blockquote", children)
@@ -176,3 +175,10 @@ def ordered_to_html_node(block):
         new_line = re.findall(r"^\d+\.\ (.*?)$", line)[0]
         li.append(ParentNode("li", text_to_children(new_line)))
     return ParentNode("ol", li)
+
+def extract_title(markdown):
+    title = re.findall(r"^\#\ (.+)", markdown)
+    if len(title) == 0:
+        raise Exception("no header")
+    print(title)
+    return title[0]

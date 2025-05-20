@@ -1,7 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType
-from parser import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes, markdown_to_blocks, markdown_to_html_node
+from parser import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_textnodes, markdown_to_blocks, markdown_to_html_node, extract_title
 from block import block_to_block_type, BlockType
 
 class TestTextNode(unittest.TestCase):
@@ -292,14 +292,6 @@ This is the same paragraph on a new line
         block = "> quoted text\n> second text"
         self.assertEqual(block_to_block_type(block), BlockType.QUOTE)
 
-    def test_block_to_block_type_wrong_quote(self):
-        block = ">quoted text\n> second text"
-        self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
-
-    def test_block_to_block_type_wrong_quote2(self):
-        block = "> quoted text\n>second text"
-        self.assertEqual(block_to_block_type(block), BlockType.PARAGRAPH)
-
     def test_block_to_block_type_unordered(self):
         block = "- item 1"
         self.assertEqual(block_to_block_type(block), BlockType.UNORDERED_LIST)
@@ -382,5 +374,15 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+    def test_extract_title(self):
+        markdown = """# title example
+
+- useless item"""
+        try:
+            title = extract_title(markdown)
+        except Exception:
+            title = "no title"
+        self.assertEqual(title, "title example")
 if __name__ == "__main__":
     unittest.main()
