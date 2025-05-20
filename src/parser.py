@@ -180,5 +180,4 @@ def extract_title(markdown):
     title = re.findall(r"^\#\ (.+)", markdown)
     if len(title) == 0:
         raise Exception("no header")
-    print(title)
     return title[0]
